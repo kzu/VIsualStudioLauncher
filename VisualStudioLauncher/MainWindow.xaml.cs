@@ -1,17 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Windows.Threading;
+using Squirrel;
 
 namespace VisualStudioLauncher
 {
@@ -23,6 +16,28 @@ namespace VisualStudioLauncher
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        protected override void OnInitialized(EventArgs e)
+        {
+            base.OnInitialized(e);
+
+#if RELEASE
+            var updateFrom = "https://devdiv.blob.core.windows.net/vsl";
+#else
+            var updateFrom = Assembly.GetExecutingAssembly().GetCustomAttributes<AssemblyMetadataAttribute>()
+                .Where(x => x.Key == "ReleasesPath")
+                .Select(x => x.Value)
+                .First();
+#endif
+
+            Task.Delay(1000).ContinueWith(async x =>
+            {
+                using (var updater = new UpdateManager(updateFrom))
+                {
+                    await updater.UpdateApp(i => Dispatcher.Invoke(() => $"Updating {i}...", DispatcherPriority.Background));
+                }
+            });
         }
     }
 }
