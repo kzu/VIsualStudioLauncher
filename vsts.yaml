@@ -15,7 +15,7 @@ steps:
   displayName: Build
   inputs:
     solution: build.proj
-    msbuildArguments: /bl:"$(Build.ArtifactStagingDirectory)\build.binlog" /p:Configuration=Release
+    msbuildArguments: /bl:"$(Build.ArtifactStagingDirectory)\build.binlog" /p:Configuration=Release /p:StorageAuthentication=$(StorageAuthentication)
 
 - task: PublishBuildArtifacts@1
   displayName: Publish Artifact
