@@ -18,7 +18,7 @@
     <PackageReference Include="GitInfo" Version="2.0.14" PrivateAssets="all" />
   </ItemGroup>
 
-  <Target Name="Build" DependsOnTargets="SetVersions" Returns="@(UploadBlob)">
+  <Target Name="Build" DependsOnTargets="SetVersions;DowloadBlobs" Returns="@(UploadBlob)">
     <MSBuild Projects="VisualStudioLauncher.sln" Properties="ReleaseDir=$(DownloadFolder)" Targets="Build" />
     <ItemGroup>
       <UploadBlob Include="$(DownloadFolder)\**\*.*" />
@@ -28,9 +28,7 @@
     </ItemGroup>
   </Target>
 
-  <Target Name="Publish" 
-          DependsOnTargets="DowloadBlobs;UploadBlobs" 
-          AfterTargets="Build"
+  <Target Name="Publish" DependsOnTargets="UploadBlobs" AfterTargets="Build"
           Condition="'$(CI)' == 'true' and '$(Configuration)' == 'Release' and '$(GitBranch)' == 'master'" 
           Returns="@(UploadedBlob)" />
 
