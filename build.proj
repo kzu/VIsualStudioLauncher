@@ -1,0 +1,36 @@
+<Project Sdk="CoreBuild/1.0.0-alpha" DefaultTargets="Build">
+
+  <PropertyGroup>
+    <Configuration>Debug</Configuration>
+
+    <StorageAccount>devdiv</StorageAccount>
+    <!-- Specified as a build parameter -->
+    <StorageAuthentication />
+    <StorageUseEmulator Condition="'$(Configuration)' == 'Debug'">true</StorageUseEmulator>
+
+    <UploadContainer>vsl</UploadContainer>
+    <DownloadContainer>$(UploadContainer)</DownloadContainer>
+    <DownloadFolder>$(MSBuildProjectDirectory)\Releases</DownloadFolder>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FireGiant.BuildTasks.AzureStorage" Version="1.1.0" />
+  </ItemGroup>
+
+  <Target Name="Build" DependsOnTargets="DowloadBlobs" Returns="@(UploadBlob)">
+    <MSBuild Projects="VisualStudioLauncher.sln" Properties="ReleaseDir=$(DownloadFolder)" Targets="Build" />
+    <ItemGroup>
+      <UploadBlob Include="$(DownloadFolder)\**\*.*" />
+      <UploadBlob>
+        <BlobName>%(RecursiveDir)%(Filename)%(Extension)</BlobName>
+      </UploadBlob>
+    </ItemGroup>
+  </Target>
+
+  <Target Name="Upload" AfterTargets="Build" DependsOnTargets="UploadBlobs" Returns="@(UploadedBlob)" />
+
+  <Target Name="AfterRestore" AfterTargets="Restore">
+    <MSBuild Projects="VisualStudioLauncher.sln" Targets="Restore" />
+  </Target>
+
+</Project>

@@ -1,0 +1,58 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net47</TargetFramework>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <OutputType>WinExe</OutputType>
+
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>VisualStudioLauncher</PackageId>
+
+    <Authors>Daniel Cazzulino</Authors>
+    <Owners>Daniel Cazzulino</Owners>
+    <Description>A launcher for Visual Studio 2017 or later.</Description>
+
+    <PackageProjectUrl>https://github.com/kzu/VisualStudioLauncher/</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/kzu/VisualStudioLauncher/blob/master/LICENSE</PackageLicenseUrl>
+    <Copyright>Copyright © 2018 Daniel Cazzulino</Copyright>
+
+    <DefaultItemExcludes>Releases\**\*.*</DefaultItemExcludes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="GitInfo" Version="2.0.14" PrivateAssets="all" />
+    <PackageReference Include="squirrel.windows" Version="1.8.0" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </ApplicationDefinition>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Reflection.AssemblyMetadata">
+      <_Parameter1>ReleasesPath</_Parameter1>
+      <_Parameter2>$(MSBuildProjectDirectory)\Releases</_Parameter2>
+    </AssemblyAttribute>
+  </ItemGroup>
+
+  <Import Project="VisualStudioLauncher.targets" />
+</Project>

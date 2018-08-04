@@ -1,0 +1,21 @@
+<Project>
+  <PropertyGroup>
+    <TargetsForTfmSpecificBuildOutput>AddSquirrelFiles</TargetsForTfmSpecificBuildOutput>
+    <ReleaseDirArg Condition="'$(ReleaseDir)' != ''"> --releaseDir="$(ReleaseDir)"</ReleaseDirArg>
+  </PropertyGroup>
+
+  <Target Name="AddSquirrelFiles" DependsOnTargets="ResolvePackageAssets">
+    <ItemGroup>
+      <BuildOutputInPackage Include="@(RuntimeCopyLocalItems)" TargetPath="%(Filename)%(Extension)" />
+      <!--<_PackageFiles Include="@(RuntimeCopyLocalItems)" TargetFramework="$(TargetFramework)" TargetPath="%(Filename)%(Extension)" />-->
+    </ItemGroup>
+  </Target>
+
+  <Target Name="Releasify" AfterTargets="Pack">
+    <PropertyGroup>
+      <SquirrelToolsPath>$(NuGetPackageRoot)squirrel.windows\1.8.0\tools</SquirrelToolsPath>
+    </PropertyGroup>
+    <Exec Command='"$(SquirrelToolsPath)\Squirrel.exe" --releasify="$(MSBuildProjectDirectory)\$(PackageOutputPath)$(PackageId).$(PackageVersion).nupkg"$(ReleaseDirArg)' />
+  </Target>
+
+</Project>
