@@ -15,9 +15,10 @@
 
   <ItemGroup>
     <PackageReference Include="FireGiant.BuildTasks.AzureStorage" Version="1.1.0" />
+    <PackageReference Include="GitInfo" Version="2.0.14" PrivateAssets="all" />
   </ItemGroup>
 
-  <Target Name="Build" DependsOnTargets="DowloadBlobs" Returns="@(UploadBlob)">
+  <Target Name="Build" DependsOnTargets="SetVersions" Returns="@(UploadBlob)">
     <MSBuild Projects="VisualStudioLauncher.sln" Properties="ReleaseDir=$(DownloadFolder)" Targets="Build" />
     <ItemGroup>
       <UploadBlob Include="$(DownloadFolder)\**\*.*" />
@@ -27,10 +28,15 @@
     </ItemGroup>
   </Target>
 
-  <Target Name="Upload" AfterTargets="Build" DependsOnTargets="UploadBlobs" Returns="@(UploadedBlob)" />
+  <Target Name="Publish" 
+          DependsOnTargets="DowloadBlobs;UploadBlobs" 
+          AfterTargets="Build"
+          Condition="'$(CI)' == 'true' and '$(Configuration)' == 'Release' and '$(GitBranch)' == 'master'" 
+          Returns="@(UploadedBlob)" />
 
   <Target Name="AfterRestore" AfterTargets="Restore">
     <MSBuild Projects="VisualStudioLauncher.sln" Targets="Restore" />
   </Target>
 
+  <Import Project="Version.targets" />
 </Project>
