@@ -15,7 +15,7 @@
     <PropertyGroup>
       <SquirrelToolsPath>$(NuGetPackageRoot)squirrel.windows\1.8.0\tools</SquirrelToolsPath>
     </PropertyGroup>
-    <Exec Command='"$(SquirrelToolsPath)\Squirrel.exe" --releasify="$(MSBuildProjectDirectory)\$(PackageOutputPath)$(PackageId).$(PackageVersion).nupkg"$(ReleaseDirArg)'
+    <Exec Command='"$(SquirrelToolsPath)\Squirrel.exe" --no-delta --no-msi --releasify="$(MSBuildProjectDirectory)\$(PackageOutputPath)$(PackageId).$(PackageVersion).nupkg"$(ReleaseDirArg)'
           ConsoleToMSBuild='true'
 			    StandardErrorImportance='high'
 			    StandardOutputImportance='high'>
