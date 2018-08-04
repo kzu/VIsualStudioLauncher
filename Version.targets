@@ -22,7 +22,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <VersionMetadata Include="$(GitCommits)"/>
       <VersionMetadata Condition="$(CI) and '$(BUILD_REASON)' == 'PullRequest'"
                        Include="pr.$(BUILD_SOURCEBRANCH.Substring(10).TrimEnd('/merge'))"/>
       <VersionMetadata Include="sha.$(GitCommit)"/>
