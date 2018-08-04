@@ -15,11 +15,12 @@ steps:
   displayName: Build
   inputs:
     solution: build.proj
-    msbuildArguments: /bl:"$(Build.ArtifactStagingDirectory)\build.binlog" /p:Configuration=Release /p:StorageAuthentication=$(StorageAuthentication)
+    msbuildArguments: /bl:"$(Build.ArtifactStagingDirectory)\build.binlog" /v:d /p:Configuration=Release /p:StorageAuthentication=$(StorageAuthentication)
 
 - task: PublishBuildArtifacts@1
   displayName: Publish Artifact
   inputs:
     PathtoPublish: $(Build.ArtifactStagingDirectory)
-    ArtifactName: logs
+    ArtifactName: out
     ArtifactType: Container
+  condition: always()
