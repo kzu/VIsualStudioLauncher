@@ -22,6 +22,8 @@ namespace VisualStudioLauncher
         {
             base.OnInitialized(e);
 
+            Title += " - " + Assembly.GetExecutingAssembly().GetName().Version;
+
 #if RELEASE
             var updateFrom = "https://devdiv.blob.core.windows.net/vsl";
 #else
