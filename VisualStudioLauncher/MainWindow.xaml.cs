@@ -42,6 +42,9 @@ namespace VisualStudioLauncher
                 using (var updater = new UpdateManager(updateFrom))
                 {
                     var result = await updater.UpdateApp(i => Dispatcher.Invoke(() => status.Text = $"Updating {i}...", DispatcherPriority.Background));
+                    if (result == null)
+                        return;
+
                     if (result.Version > version)
                     {
                         Dispatcher.Invoke(() => status.Text = $"Restart to update to version {result.Version}.");

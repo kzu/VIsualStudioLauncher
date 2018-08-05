@@ -4,13 +4,34 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
+        xmlns:l="clr-namespace:VisualStudioLauncher"
         WindowStartupLocation="CenterOwner"
         Title="Visual Studio Launcher" Height="450" Width="800">
-    <Grid>
+    <Window.DataContext>
+        <l:MainViewModel />
+    </Window.DataContext>
+    <Grid x:Name="Root">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="25" />
         </Grid.RowDefinitions>
+        <ListView Margin="0,0,0,10" 
+                  HorizontalContentAlignment="Stretch"
+                  x:Name="instances" 
+                  SelectedItem="{Binding SelectedInstance, Mode=TwoWay}"
+                  SelectionMode="Single" 
+                  ItemsSource="{Binding Instances}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding DisplayName}" />
+                        <TextBlock Text=" | " />
+                        <TextBlock Text="{Binding Catalog.ProductSemanticVersion}" />
+                        <Button Command="{Binding Path=DataContext.Launch, ElementName=Root}" CommandParameter="{Binding}">Launch</Button>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
         <TextBlock Padding="3" Background="Gainsboro" Text="Ready" x:Name="status" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
     </Grid>
 </Window>

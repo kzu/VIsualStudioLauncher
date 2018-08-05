@@ -2,13 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>net47</TargetFramework>
+    <LangVersion>Latest</LangVersion>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <OutputType>WinExe</OutputType>
 
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
 
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">true</GeneratePackageOnBuild>
     <PackageId>VisualStudioLauncher</PackageId>
 
     <Authors>Daniel Cazzulino</Authors>
@@ -24,6 +25,11 @@
 
   <ItemGroup>
     <PackageReference Include="GitInfo" Version="2.0.14" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.VisualStudio.Setup.Configuration.Interop" Version="1.16.30">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>all</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="squirrel.windows" Version="1.8.0" PrivateAssets="all" />
   </ItemGroup>
 
