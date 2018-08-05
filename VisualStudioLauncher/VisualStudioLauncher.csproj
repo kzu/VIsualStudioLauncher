@@ -45,6 +45,7 @@
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <UpToDateCheckInput Include="**\*.xaml" />
   </ItemGroup>
 
   <ItemGroup>

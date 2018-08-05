@@ -2,19 +2,20 @@
   <PropertyGroup>
     <TargetsForTfmSpecificBuildOutput>AddSquirrelFiles</TargetsForTfmSpecificBuildOutput>
     <ReleaseDirArg Condition="'$(ReleaseDir)' != ''"> --releaseDir="$(ReleaseDir)"</ReleaseDirArg>
+    <SquirrelToolsPath>$(NuGetPackageRoot)squirrel.windows\1.8.0\tools</SquirrelToolsPath>
   </PropertyGroup>
 
   <Target Name="AddSquirrelFiles" DependsOnTargets="ResolvePackageAssets">
     <ItemGroup>
       <BuildOutputInPackage Include="@(RuntimeCopyLocalItems)" TargetPath="%(Filename)%(Extension)" />
-      <!--<_PackageFiles Include="@(RuntimeCopyLocalItems)" TargetFramework="$(TargetFramework)" TargetPath="%(Filename)%(Extension)" />-->
     </ItemGroup>
   </Target>
 
+  <Target Name="CopyUpdater" BeforeTargets="Build">
+    <Copy SourceFiles="$(SquirrelToolsPath)\Squirrel.exe" DestinationFiles="$(OutputPath)\..\Update.exe" SkipUnchangedFiles="true" />
+  </Target>
+
   <Target Name="Releasify" AfterTargets="Pack">
-    <PropertyGroup>
-      <SquirrelToolsPath>$(NuGetPackageRoot)squirrel.windows\1.8.0\tools</SquirrelToolsPath>
-    </PropertyGroup>
     <Exec Command='"$(SquirrelToolsPath)\Squirrel.exe" --no-delta --no-msi --releasify="$(MSBuildProjectDirectory)\$(PackageOutputPath)$(PackageId).$(PackageVersion).nupkg"$(ReleaseDirArg)'
           ConsoleToMSBuild='true'
 			    StandardErrorImportance='high'

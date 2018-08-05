@@ -9,8 +9,8 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
-            <RowDefinition Height="20" />
+            <RowDefinition Height="25" />
         </Grid.RowDefinitions>
-        <StatusBar x:Name="status" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+        <TextBlock Padding="3" Background="Gainsboro" Text="Ready" x:Name="status" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
     </Grid>
 </Window>

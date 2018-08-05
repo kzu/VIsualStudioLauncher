@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
+using NuGet;
 using Squirrel;
 
 namespace VisualStudioLauncher
@@ -22,7 +23,10 @@ namespace VisualStudioLauncher
         {
             base.OnInitialized(e);
 
-            Title += " - " + Assembly.GetExecutingAssembly().GetName().Version;
+            var version = new SemanticVersion(Assembly.GetExecutingAssembly().GetName().Version);
+            // Switch to AssemblyInformationalVersionAttribute when Squirrel supports SemVer2
+
+            Title += " - " + version;
 
 #if RELEASE
             var updateFrom = "https://devdiv.blob.core.windows.net/vsl";
@@ -33,11 +37,19 @@ namespace VisualStudioLauncher
                 .First();
 #endif
 
-            Task.Delay(1000).ContinueWith(async x =>
+            Task.Delay(200).ContinueWith(async x =>
             {
                 using (var updater = new UpdateManager(updateFrom))
                 {
-                    await updater.UpdateApp(i => Dispatcher.Invoke(() => $"Updating {i}...", DispatcherPriority.Background));
+                    var result = await updater.UpdateApp(i => Dispatcher.Invoke(() => status.Text = $"Updating {i}...", DispatcherPriority.Background));
+                    if (result.Version > version)
+                    {
+                        Dispatcher.Invoke(() => status.Text = $"Restart to update to version {result.Version}.");
+                    }
+                    else if (result.Version <= version)
+                    {
+                        Dispatcher.Invoke(() => status.Text = $"Running latest version.");
+                    }
                 }
             });
         }
