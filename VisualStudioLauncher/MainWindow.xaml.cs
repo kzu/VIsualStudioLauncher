@@ -27,6 +27,7 @@ namespace VisualStudioLauncher
             // Switch to AssemblyInformationalVersionAttribute when Squirrel supports SemVer2
 
             Title += " - " + version;
+            VersionTextBlock.Text = version.ToString();
 
 #if RELEASE
             var updateFrom = "https://devdiv.blob.core.windows.net/vsl";

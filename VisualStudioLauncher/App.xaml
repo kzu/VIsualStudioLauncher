@@ -1,8 +1,34 @@
 ﻿<Application x:Class="VisualStudioLauncher.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             StartupUri="MainWindow.xaml">
+              xmlns:s="clr-namespace:System;assembly=mscorlib"
+            StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <s:Double x:Key="HorizontalOuterMargin">48</s:Double>
+        <s:Double x:Key="VerticalOuterMargin">25</s:Double>
+        <SolidColorBrush x:Key="VS.Violet" Color="#FF865FC5" />
+        <Style x:Key="AppTitleTextStyle" TargetType="TextBlock">
+            <Style.Setters>
+                <Setter Property="Foreground" Value="{StaticResource VS.Violet}"/>
+                <Setter Property="FontSize"  Value="34"/>
+                <Setter Property="Margin">
+                    <Setter.Value>
+                        <Thickness Left="{StaticResource HorizontalOuterMargin}"
+                                   Right="{StaticResource HorizontalOuterMargin}"
+                                   Top="{StaticResource VerticalOuterMargin}"
+                                   Bottom="14"/>
+                    </Setter.Value>
+                </Setter>
+            </Style.Setters>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="0,4,5,0"/>
+            <Setter Property="Padding" Value="21,2"/>
+            <Setter Property="Background" Value="#FFEDECF0"/>
+            <Setter Property="BorderBrush" Value="#FFCCCEDB"/>
+        </Style>
+        <Style x:Key="ButtonText" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="12.5"/>
+        </Style>
     </Application.Resources>
 </Application>
